@@ -1,0 +1,31 @@
+---
+- name: example playbook
+  hosts: all
+  vars:
+    myvarone: "example one"
+    bbool: true
+    mylist:
+      - New York
+      - Paris
+
+
+  tasks:
+    - name: print a variable
+      ansible.builtin.debug: # debug is the module name 
+        msg: "value of my variable is::: {{ myvarone }}" # var: myvarone
+      notify: reload # trigger handler
+
+    - name: conditional
+      ansible.builtin.debug:
+        msg: "conditional statement execute"
+      when: bbool # run when boolian is true
+    
+    - name: print cities
+      ansible.builtin.debug:
+        var: item  # the variable 'item' gets values from loop, one by one
+      loop: "{{ mylist }}"
+
+  handlers:
+    - name: reload
+      ansible.builtin.debug:
+        msg: "example handller"
